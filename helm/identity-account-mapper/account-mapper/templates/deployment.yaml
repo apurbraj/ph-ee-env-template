@@ -1,4 +1,4 @@
-{{- if .Values.identity_account_mapper.enabled -}}
+{{- if .Values.identity_account_mapper.enabled }}
 
 apiVersion: {{ .Values.deployment.apiversion }}
 kind: Deployment
@@ -16,9 +16,9 @@ spec:
       labels:
         app: ph-ee-identity-account-mapper
       annotations:
-{{- if .Values.identity_account_mapper.deployment.annotations }}
-{{ toYaml .Values.identity_account_mapper.deployment.annotations | indent 8 }}
-{{- end }}
+        {{- if .Values.identity_account_mapper.deployment.annotations }}
+          {{ toYaml .Values.identity_account_mapper.deployment.annotations | indent 8 }}
+          {{- end }}
     spec:
       containers:
         - name: ph-ee-identity-account-mapper
@@ -30,31 +30,29 @@ spec:
             httpGet:
               path: /oauth/token_key
               port: 5000
-          periodSeconds: 30
-          timeoutSeconds: 5
-          resources:
-            limits:
-            memory: "{{ .Values.identity_account_mapper.limits.memory }}"
-            cpu: "{{ .Values.identity_account_mapper.limits.cpu }}"
-          requests:
-            memory: "{{ .Values.identity_account_mapper.requests.memory }}"
-            cpu: "{{ .Values.identity_account_mapper.requests.cpu }}"
           env:
             - name: "LOGGING_LEVEL_ROOT"
               value: "{{ .Values.identity_account_mapper.LOGGING_LEVEL_ROOT }}"
-            - name: "async_core-pool-size"
-              value: "{{ .Values.identity_account_mapper.async_core-pool-size }}"
-            - name: "async_max-pool-size"
-              value: "{{ .Values.identity_account_mapper.async_max-pool-size }}"
-            - name: "async_queue-capacity"
-              value: "{{ .Values.identity_account_mapper.async_queue-capacity }}"
+            - name: "async.core-pool-size"
+              value: "{{ .Values.identity_account_mapper.async.core_pool_size }}"
+            - name: "async.max-pool-size"
+              value: "{{ .Values.identity_account_mapper.async.max_pool_size }}"
+            - name: "async.queue-capacity"
+              value: "{{ .Values.identity_account_mapper.async.queue_capacity }}"
+            - name: "account_validation_enabled"
+              value: "{{ .Values.identity_account_mapper.account_validation_enabled }}"
+            - name: "account_validator_connector"
+              value: "{{ .Values.identity_account_mapper.account_validator_connector }}"
+            - name: "gsma-connector.contactpoint"
+              value: "{{ .Values.identity_account_mapper.gsma_connector.contactpoint }}"
+            - name: "mojaloop-connector.contactpoint"
+              value: "{{ .Values.identity_account_mapper.mojaloop_connector.contactpoint }}"
+          resources:
+            limits:
+              memory: "{{ .Values.identity_account_mapper.limits.memory }}"
+              cpu: "{{ .Values.identity_account_mapper.limits.cpu }}"
+            requests:
+              memory: "{{ .Values.identity_account_mapper.requests.memory }}"
+              cpu: "{{ .Values.identity_account_mapper.requests.cpu }}"
 
-
-          volumeMounts:
-                - name: ph-ee-config
-                  mountPath: "/config"
-    volumes:
-          - name: ph-ee-config
-            configMap:
-              name: ph-ee-config
-{{- end }}
+  {{- end }}

@@ -1,0 +1,64 @@
+deployment:
+  apiversion: "apps/v1"
+
+ingress:
+  apiversion: networking.k8s.io/v1
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+  tls:
+    - hosts: "identity.sandbox.mifos.io"
+    - secretName: sandbox-secret
+  path: "/"
+  backend:
+    service:
+      name: ph-ee-identity-account-mapper
+      port:
+        number: 80
+deployment:
+  apiVersion: "apps/v1"
+  annotations:
+    deployTime: "{{ .Values.deployTime }}"
+
+service:
+  apiversion: "v1"
+
+secret:
+  apiversion: "v1"
+
+configmap:
+  apiversion: "v1"
+
+
+
+
+identity_account_mapper:
+  enabled: true
+  replicas: 1
+  image: ""
+  imageTag: latest
+  hostname: "identity.sandbox.fynarfin.io"
+  SPRING_PROFILES_ACTIVE: "bb"
+  limits:
+    cpu: "500m"
+    memory: "512M"
+  requests:
+    cpu: "100m"
+    memory: "256M"
+  deployment:
+    apiVersion: "apps/v1"
+    annotations:
+      deployTime: "{{ .Values.deployTime }}"
+
+  LOGGING_LEVEL_ROOT : ""
+  async:
+    core_pool_size: ""
+    max_pool_size: ""
+    queue_capacity: ""
+  account_validation_enabled: ""
+  account_validator_connector: ""
+  gsma_connector:
+    contactpoint: ""
+  mojaloop_connector:
+    contactpoint: ""
+

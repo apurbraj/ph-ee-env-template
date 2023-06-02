@@ -212,34 +212,33 @@ operationsmysql:
     rootPassword: "4ET6ywqlGt"
   initdbScripts:
     setup.sql: |-
-      CREATE DATABASE IF NOT EXISTS phdefault;
-      CREATE DATABASE IF NOT EXISTS messagegateway;
+      CREATE DATABASE IF NOT EXISTS identityAccountMapper;
       GRANT ALL ON *.* TO 'root'@'%';
-      GRANT ALL PRIVILEGES ON messagegateway.* TO 'mifos';
-      GRANT ALL PRIVILEGES ON phdefault.* TO 'mifos';
+      GRANT ALL PRIVILEGES ON identityAccountMapper.* TO 'mifos';
 
 ph_ee_connector_mojaloop:
   enabled: false
   replicas: 1
-  image: ""
-  imageTag: "v1.1.0"
-  imagePullPolicy: "Always"
-  SPRING_PROFILES_ACTIVE: ""
+  image: "419830066942.dkr.ecr.ap-south-1.amazonaws.com/phee-mojaloop"
+  imageTag: "latest"
+  SPRING_PROFILES_ACTIVE: "bb"
+  hostname: "mojaloop.sandbox.fynarfin.io"
+  DFSPIDS: "gorilla,rhino"
   switch:
     quotes:
-      host: ""
-      service: ""
+      host: "http://quoting-service.sandbox.fynarfin.io"
+      service: "quoting-service.sandbox.fynarfin.io"
     als:
-      host: ""
-      service: ""
+      host: "http://account-lookup-service.sandbox.fynarfin.io"
+      service: "account-lookup-service.local"
     transfers:
-      host: ""
-      service: ""
+      host: "http://api-adapter.sandbox.fynarfin.io"
+      service: "api-adapter.sandbox.fynarfin.io"
     transactions:
-      host: ""
-      service: ""
+      host: "http://ml-api-adapter.sandbox.fynarfin.io"
+      service: "ml-api-adapter.sandbox.fynarfin.io"
     oracle:
-      host: ""
+      host: "http://moja-simulator.sandbox.fynarfin.io"
   livenessProbe:
     httpGet:
       path: /actuator/health/liveness
@@ -324,8 +323,8 @@ ph_ee_connector_mojaloop:
 importer_es:
   enabled: true
   replicas: 1
-  image: ""
-  imageTag: "v1.4.0"
+  image: "419830066942.dkr.ecr.ap-south-1.amazonaws.com/ph-es-importer"
+  imageTag: "latest"
   imagePullPolicy: "Always"
   importer_elasticsearch_url: "http://ph-ee-elasticsearch:9200/"
   reporting:
@@ -438,3 +437,25 @@ kafka:
   deployment:
     annotations:
       deployTime: "{{ .Values.deployTime }}"
+
+identity_account_mapper:
+  enabled: true
+  image: "http://419830066942.dkr.ecr.ap-south-1.amazonaws.com/ph-ee-identity-account-mapper"
+  imageTag: "latest"
+  imagePullPolicy: "Always"
+  hostname: "identity.sandbox.fynarfin.io"
+  ingress:
+    enabled: false
+    path: "/"
+    annotations: { }
+    backend: { }
+  async:
+    core_pool_size: ""
+    max_pool_size: ""
+    queue_capacity: ""
+  account_validation_enabled: ""
+  account_validator_connector: ""
+  gsma_connector:
+    contactpoint: ""
+  mojaloop_connector:
+    contactpoint: ""
