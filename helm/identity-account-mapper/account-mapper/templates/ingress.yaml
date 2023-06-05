@@ -4,23 +4,23 @@ kind: Ingress
 metadata:
   name: ph-ee-identity-account-mapper
   annotations:
-  {{- if .Values.ingress.annotations }}
-  {{ toYaml .Values.ingress.annotations | indent 4 }}
-  {{- end }}
+{{- if .Values.ingress.annotations }}
+{{ toYaml .Values.ingress.annotations | indent 4 }}
+{{- end }}
 spec:
   rules:
-    - host: "{{ .Values.hostname }}"
+    - host: "{{ .Values.ingress.hostname }}"
       http:
         paths:
           - path: "{{ .Values.ingress.path }}"
             pathType: Prefix
             backend:
-  {{- if .Values.ingress.backend }}
-  {{ toYaml .Values.ingress.backend | indent 14 }}
-  {{- end }}
-
-tls:
-  - hosts:
-      - "{{ .Values.wildcardhostname }}"
-    secretName: "{{ .Values.tls }}"
+              service:
+                name: ph-ee-identity-account-mapper
+                port:
+                  number: 8080
+  tls:
+    - hosts:
+        - "{{ .Values.ingress.wildcardhostname }}"
+      secretName: "{{ .Values.tls }}"
   {{- end }}
