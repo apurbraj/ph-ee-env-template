@@ -519,10 +519,10 @@ jobs:
                 echo "File is empty, waiting..."
                 sleep 60  # You can adjust the sleep interval as needed
                 kubectl cp paymenthub/`kubectl get pods -n paymenthub | grep g2p-sandbox-test-ams |cut -d " " -f1`:/ph-ee-connector-integration-test/build/ integration_report/test-report
-                downloaded_file="integration_report/test-report/cucumber.xml"
+                downloaded_file="integration_report/cucumber.xml"
             done
             echo "File is no longer empty, processing..."
-            mv integration_report/test-report/cucumber.xml integration_report/test-report/cucumber_ams.xml
+            mv integration_report/cucumber.xml integration_report/test-report/cucumber_ams.xml
             mv integration_report/test-report/reports/tests/test integration_report/test-report/reports/tests/test_ams
             # kubectl cp paymenthubb/`kubectl get pods -n paymenthub | grep g2p-sandbox-test-ams |cut -d " " -f1`:/ph-ee-connector-integration-test/build integration_report/test-report
 
@@ -543,10 +543,10 @@ jobs:
                 echo "File is empty, waiting..."
                 sleep 60  # You can adjust the sleep interval as needed
                 kubectl cp paymenthub/`kubectl get pods -n paymenthub | grep g2p-sandbox-test-gov |cut -d " " -f1`:/ph-ee-connector-integration-test/build/ integration_report/test-report
-                downloaded_file="integration_report/test-report/cucumber.xml"
+                downloaded_file="integration_report/cucumber.xml"
             done
             echo "File is no longer empty, processing..."
-            mv integration_report/test-report/cucumber.xml integration_report/test-report/cucumber_gov.xml
+            mv integration_report/cucumber.xml integration_report/test-report/cucumber_gov.xml
             mv integration_report/test-report/reports/tests/test integration_report/test-report/reports/tests/test_gov
            
             mkdir -p integration_report_final
