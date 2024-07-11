@@ -562,7 +562,7 @@ jobs:
                 echo " " >> all_pod_logs.log
                 echo " " >> all_pod_logs.log
             done
-            mv all_pod_logs.log integration_report/test-report/reports/tests/
+            # mv all_pod_logs.log integration_report/test-report/reports/tests/
 
       - store_test_results:
           path: integration_report_final/
