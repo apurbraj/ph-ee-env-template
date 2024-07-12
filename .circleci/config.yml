@@ -361,7 +361,7 @@ jobs:
             echo ------------MEMORY CHECK -----------
            
       - run:
-          no_output_timeout: 20m
+          no_output_timeout: 30m
           name: fetch docker images and helm upgrade
           environment:
             ORB_CHART_BASE_URL: << parameters.chart-base-url >>
